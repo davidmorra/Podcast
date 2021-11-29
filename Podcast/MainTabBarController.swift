@@ -19,6 +19,7 @@ class MainTabBarController: UITabBarController {
         tabBar.tintColor = .purple
         
         setUpViewControllers()
+        print("git")
     }
     
     // MARK: - Set Up View Controllers
