@@ -25,7 +25,6 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         
         setupSearchBar()
-        
         setupTableView()
         
     }
@@ -40,7 +39,10 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     
     // MARK: - Setup Work
     fileprivate func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        
+        let nib = UINib(nibName: "PodcastCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellID)
     }
     
     
@@ -55,22 +57,28 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     }
     
     
-    
-    
     // MARK: - UITableView
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return podcasts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
-        let podcast = self.podcasts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PodcastCell
         
-        cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
-        cell.textLabel?.numberOfLines = -1
-        cell.imageView?.image = UIImage(systemName: "photo")
+        
+        let podcast = self.podcasts[indexPath.row]
+        cell.podcast = podcast
+        
+        
+//        cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
+//        cell.textLabel?.numberOfLines = -1
+//        cell.imageView?.image = UIImage(systemName: "photo")
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 128
     }
     
     
