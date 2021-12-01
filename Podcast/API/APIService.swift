@@ -9,15 +9,12 @@ import Foundation
 import Alamofire
 
 class APIService {
-    // singleton
     static let shared = APIService()
     let baseiTunesURL = "https://itunes.apple.com/search"
     
     
     func fetchPodcast(searchText: String, completionHandler: @escaping ([Podcast]) -> ()) {
-        print("Searching for podcasts...")
         
-        let url = "https://itunes.apple.com/search"
         let parameters = ["term": searchText, "media": "podcast"]
         
         AF.request(baseiTunesURL, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { dataResponse in
@@ -29,7 +26,6 @@ class APIService {
             guard let data = dataResponse.data else { return }
                         
             do {
-                print(3)
                 let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
                 
                 completionHandler(searchResult.results)
@@ -42,8 +38,6 @@ class APIService {
             }
             
         }
-        
-        print(2)
     }
     
     // MARK: - Search Result Struct

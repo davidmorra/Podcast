@@ -10,12 +10,7 @@ import Alamofire
 
 class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     
-    var podcasts = [
-        Podcast(trackName: "Kuji Podcast", artistName: "Kuji"),
-        Podcast(trackName: "History of Rome in 20 minutes", artistName: "Arzamas"),
-        Podcast(trackName: "Ancient Greece in 20 minutes", artistName: "Arzamas")
-
-    ]
+    var podcasts = [Podcast]()
 
     let cellID = "cellID"
     
@@ -30,16 +25,16 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     }
     
     fileprivate func setupSearchBar() {
+        self.definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.searchBar.delegate = self
     }
     
-    
-    
+        
     // MARK: - Setup Work
     fileprivate func setupTableView() {
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+//        tableView.tableFooterView = UIView()
         
         let nib = UINib(nibName: "PodcastCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellID)
@@ -48,16 +43,36 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     
     // MARK: - Search Bar + Alamofire Request
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(1)
         APIService.shared.fetchPodcast(searchText: searchText) { podcasts in
             self.podcasts = podcasts
             self.tableView.reloadData()
         }
-
     }
     
     
     // MARK: - UITableView
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episodesController = EpisodesController()
+        let podcast = self.podcasts[indexPath.row]
+        episodesController.podcast = podcast
+        
+        navigationController?.pushViewController(episodesController, animated: true)
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Please enter a Search Term"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return self.podcasts.count > 0 ? 0 : 250
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return podcasts.count
     }
@@ -65,20 +80,14 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PodcastCell
         
-        
         let podcast = self.podcasts[indexPath.row]
         cell.podcast = podcast
-        
-        
-//        cell.textLabel?.text = "\(podcast.trackName ?? "")\n\(podcast.artistName ?? "")"
-//        cell.textLabel?.numberOfLines = -1
-//        cell.imageView?.image = UIImage(systemName: "photo")
-        
+            
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 128
+        return 116
     }
     
     
