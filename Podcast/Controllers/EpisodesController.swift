@@ -19,36 +19,14 @@ class EpisodesController: UITableViewController {
     
     fileprivate func fetchEpisodes() {
         guard let feedUrl = podcast?.feedUrl else { return }
-        guard let url = URL(string: feedUrl) else { return }
         
-        let parser = FeedParser(URL: url)
-        parser.parseAsync { (res) in
+        APIService.shared.fetchEpisodes(feedUrl: feedUrl) { episodes in
+            self.episodes = episodes
             
-            switch res {
-            case .success(let feed):
-                           
-                switch feed {
-                case let .rss(feed):
-                    var episodes = [Episode]() // blank
-                    
-                    feed.items?.forEach({ feedItem in
-                        let episode = Episode(title: feedItem.title ?? "" )
-                        episodes.append(episode)
-                    })
-                    
-                    self.episodes = episodes
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    break
-                    
-                default:
-                    break
-                }
-                
-            case .failure(let failure):
-                print(failure)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
+            
             
         }
         
@@ -56,16 +34,11 @@ class EpisodesController: UITableViewController {
     
     fileprivate let cellId = "cellId"
     
-    struct Episode {
-        var title: String
-    }
     
-    var episodes = [
-        Episode(title: "First Episode"),
-        Episode(title: "Second"),
-        Episode(title: "Third")
-    ]
+    var episodes = [Episode]()
     
+    
+    //MARK: - View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,10 +48,14 @@ class EpisodesController: UITableViewController {
     
     //MARK: - Setup Work {
     fileprivate func setupWork() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        let nib = UINib(nibName: "EpisodeCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     
-    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 114
+    }
     
     //MARK: - UITableView
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,15 +63,10 @@ class EpisodesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        cell.textLabel?.text = episodes[indexPath.row].title
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
+
+        cell.episode = episodes[indexPath.row]
         
         return cell
     }
-    
-    
-    
-    
-    
-    
 }

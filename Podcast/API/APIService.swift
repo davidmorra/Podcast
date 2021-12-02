@@ -7,11 +7,34 @@
 
 import Foundation
 import Alamofire
+import FeedKit
 
 class APIService {
     static let shared = APIService()
-    let baseiTunesURL = "https://itunes.apple.com/search"
     
+    func fetchEpisodes(feedUrl: String, completionHandler: @escaping ([Episode]) -> ()) {
+        guard let url = URL(string: feedUrl) else { return }
+        
+        let parser = FeedParser(URL: url)
+        parser.parseAsync { (res) in
+            
+            switch res {
+            case .success(let feed):
+
+                guard let feed = feed.rssFeed else { return }
+                
+                let episodes = feed.tpEpisodes()
+                completionHandler(episodes)
+                
+            case .failure(let failure):
+                print(failure)
+            }
+            
+        }
+    }
+    
+    
+    let baseiTunesURL = "https://itunes.apple.com/search"
     
     func fetchPodcast(searchText: String, completionHandler: @escaping ([Podcast]) -> ()) {
         
@@ -29,9 +52,6 @@ class APIService {
                 let searchResult = try JSONDecoder().decode(SearchResults.self, from: data)
                 
                 completionHandler(searchResult.results)
-                
-//                self.podcasts = searchResult.results
-//                self.tableView.reloadData()
 
             } catch let decodeErr {
                 print("Failed to decode:", decodeErr)
@@ -47,6 +67,4 @@ class APIService {
         let results: [Podcast]
         
     }
-
-    
 }

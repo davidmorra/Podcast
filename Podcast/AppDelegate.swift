@@ -37,9 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navAppearance.configureWithDefaultBackground()
             UINavigationBar.appearance().standardAppearance = navAppearance
             UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
-
         }
-
     }
 
     
