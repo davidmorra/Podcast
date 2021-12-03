@@ -37,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navAppearance.configureWithDefaultBackground()
             UINavigationBar.appearance().standardAppearance = navAppearance
             UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+            
+            UITableView.appearance().sectionHeaderTopPadding = CGFloat(0)
         }
     }
 

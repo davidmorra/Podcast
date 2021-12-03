@@ -57,7 +57,7 @@ class EpisodesController: UITableViewController {
         return 114
     }
     
-    //MARK: - UITableView
+    //MARK: - UITableView Section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }
@@ -68,5 +68,20 @@ class EpisodesController: UITableViewController {
         cell.episode = episodes[indexPath.row]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episode = self.episodes[indexPath.row]
+        
+        print("Playing episode:", episode.title)
+        
+        let playerDetailView = Bundle.main.loadNibNamed("PlayerDetailView", owner: self, options: nil)?.first as! PlayerDetailView
+        
+        playerDetailView.episode = episode
+        
+        playerDetailView.frame = self.view.frame
+        
+        let window = UIApplication.shared.keyWindow
+        window?.addSubview(playerDetailView)
     }
 }
