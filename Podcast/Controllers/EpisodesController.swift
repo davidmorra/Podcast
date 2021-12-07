@@ -58,6 +58,24 @@ class EpisodesController: UITableViewController {
     }
     
     //MARK: - UITableView Section
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.style = .large
+        activityIndicatorView.color = .darkGray
+        activityIndicatorView.startAnimating()
+        
+        let label = UILabel()
+        label.text = "Searching for episodes"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+                
+        return activityIndicatorView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return episodes.isEmpty ? 200 : 0
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }
@@ -75,7 +93,7 @@ class EpisodesController: UITableViewController {
         
         print("Playing episode:", episode.title)
         
-        let playerDetailView = Bundle.main.loadNibNamed("PlayerDetailView", owner: self, options: nil)?.first as! PlayerDetailView
+        let playerDetailView = PlayerDetailView.initFromNib()
         
         playerDetailView.episode = episode
         

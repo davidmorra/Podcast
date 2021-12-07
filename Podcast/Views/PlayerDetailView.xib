@@ -37,11 +37,14 @@
                                 <constraint firstAttribute="width" secondItem="Iqe-g5-U38" secondAttribute="height" id="SxD-7v-spd"/>
                             </constraints>
                         </imageView>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lpD-N3-CEb">
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lpD-N3-CEb">
                             <rect key="frame" x="-2" y="386" width="346" height="41"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="NLo-54-t2I"/>
                             </constraints>
+                            <connections>
+                                <action selector="handleCurrentTimeSLiderChange:" destination="3Oz-Ah-wvN" eventType="valueChanged" id="K3b-4I-je5"/>
+                            </connections>
                         </slider>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ob2-8S-FwX">
                             <rect key="frame" x="0.0" y="426" width="342" height="20"/>
@@ -52,8 +55,8 @@
                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rtV-TK-D6E">
-                                    <rect key="frame" x="299.33333333333331" y="0.0" width="42.666666666666686" height="20"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rtV-TK-D6E">
+                                    <rect key="frame" x="309.66666666666669" y="0.0" width="32.333333333333314" height="20"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -91,6 +94,9 @@
                                     <buttonConfiguration key="configuration" style="plain" image="gobackward.15" catalog="system" title="" buttonSize="large">
                                         <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="24"/>
                                     </buttonConfiguration>
+                                    <connections>
+                                        <action selector="handleRewind:" destination="3Oz-Ah-wvN" eventType="touchUpInside" id="p5M-zb-MS1"/>
+                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TkE-Bu-97S">
                                     <rect key="frame" x="104" y="68.333333333333371" width="134" height="87.333333333333314"/>
@@ -108,6 +114,9 @@
                                     <buttonConfiguration key="configuration" style="plain" image="goforward.15" catalog="system" buttonSize="large">
                                         <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="24"/>
                                     </buttonConfiguration>
+                                    <connections>
+                                        <action selector="handleFastForward:" destination="3Oz-Ah-wvN" eventType="touchUpInside" id="eho-Ck-UVl"/>
+                                    </connections>
                                 </button>
                             </subviews>
                         </stackView>
@@ -121,8 +130,11 @@
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="uio-Aq-Bm1"/>
                                     </constraints>
                                 </imageView>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3" minValue="2" maxValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="WpL-i4-i8c">
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WpL-i4-i8c">
                                     <rect key="frame" x="22" y="0.0" width="294" height="21"/>
+                                    <connections>
+                                        <action selector="handleVolume:" destination="3Oz-Ah-wvN" eventType="valueChanged" id="gvY-3w-bOl"/>
+                                    </connections>
                                 </slider>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.wave.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="GWG-wh-re0">
                                     <rect key="frame" x="318" y="1" width="24" height="18"/>
@@ -146,6 +158,9 @@
             </constraints>
             <connections>
                 <outlet property="authorLabel" destination="z2U-uf-7a0" id="ajk-p1-PAC"/>
+                <outlet property="currentTime" destination="AU3-cu-Lr8" id="C8W-cG-cHw"/>
+                <outlet property="currentTimeSlider" destination="lpD-N3-CEb" id="VIl-OS-MUP"/>
+                <outlet property="durationLabel" destination="rtV-TK-D6E" id="KIR-VQ-n8b"/>
                 <outlet property="episodeImageView" destination="Iqe-g5-U38" id="cm8-MJ-cUo"/>
                 <outlet property="episodeTitleLabel" destination="lGK-jJ-tmu" id="Ysc-7N-Frr"/>
                 <outlet property="goBackwardButton" destination="DS3-AD-lXv" id="zNF-NL-7bn"/>

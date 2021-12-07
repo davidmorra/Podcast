@@ -22,6 +22,8 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
         setupSearchBar()
         setupTableView()
         
+        searchBar(searchController.searchBar, textDidChange: "Waveform")
+        
     }
     
     fileprivate func setupSearchBar() {
@@ -40,13 +42,20 @@ class PodcastSearchController: UITableViewController, UISearchBarDelegate {
         tableView.register(nib, forCellReuseIdentifier: cellID)
     }
     
-    
+    var timer: Timer?
+
     // MARK: - Search Bar + Alamofire Request
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        APIService.shared.fetchPodcast(searchText: searchText) { podcasts in
-            self.podcasts = podcasts
-            self.tableView.reloadData()
-        }
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+            
+            APIService.shared.fetchPodcast(searchText: searchText) { podcasts in
+                self.podcasts = podcasts
+                self.tableView.reloadData()
+            }
+            
+        })
+        
     }
     
     

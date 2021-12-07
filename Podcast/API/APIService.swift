@@ -15,22 +15,28 @@ class APIService {
     func fetchEpisodes(feedUrl: String, completionHandler: @escaping ([Episode]) -> ()) {
         guard let url = URL(string: feedUrl) else { return }
         
-        let parser = FeedParser(URL: url)
-        parser.parseAsync { (res) in
+        DispatchQueue.global(qos: .background).async {
             
-            switch res {
-            case .success(let feed):
+            let parser = FeedParser(URL: url)
+   
+            parser.parseAsync { (res) in
+                
+                switch res {
+                case .success(let feed):
 
-                guard let feed = feed.rssFeed else { return }
+                    guard let feed = feed.rssFeed else { return }
+                    
+                    let episodes = feed.tpEpisodes()
+                    completionHandler(episodes)
+                    
+                case .failure(let failure):
+                    print(failure)
+                }
                 
-                let episodes = feed.tpEpisodes()
-                completionHandler(episodes)
-                
-            case .failure(let failure):
-                print(failure)
             }
-            
         }
+        
+        
     }
     
     
