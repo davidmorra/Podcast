@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class MainTabBarController: UITabBarController {
     
@@ -21,10 +22,7 @@ class MainTabBarController: UITabBarController {
         setUpViewControllers()
         
         setupPlayerDetailView()
-        
-        perform(#selector(maximazePlayerDelail), with: nil, afterDelay: 0.5)
-        
-    }
+     }
     
     @objc func minimizePlayerDetail() {
         
@@ -33,28 +31,35 @@ class MainTabBarController: UITabBarController {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut) {
             self.view.layoutIfNeeded()
+            self.tabBar.isHidden = false
         }
         
     }
     
-    @objc func maximazePlayerDelail() {
+    func maximazePlayerDelail(episode: Episode?) {
         maximizedTopAnchorConstraint.isActive = true
         maximizedTopAnchorConstraint.constant = 0
         minimizedTopAnchorConstraint.isActive = false
         
+        if episode != nil {
+            playerDeatilView.episode = episode
+        }
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut) {
             self.view.layoutIfNeeded()
+            self.tabBar.isHidden = true
         }
 
     }
+    
+    //MARK: - Setup Functions
+    let playerDeatilView = PlayerDetailView.initFromNib()
     
     var maximizedTopAnchorConstraint: NSLayoutConstraint!
     var minimizedTopAnchorConstraint: NSLayoutConstraint!
     
     // MARK: - Set Up View Controllers
     fileprivate func setupPlayerDetailView() {
-        let playerDeatilView = PlayerDetailView.initFromNib()
-        playerDeatilView.backgroundColor = .red
         
         view.insertSubview(playerDeatilView, belowSubview: tabBar)
 

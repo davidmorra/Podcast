@@ -155,8 +155,8 @@
 			children = (
 				FA5DF336275679CF0016818D /* PodcastCell.xib */,
 				FA5DF33827567CA30016818D /* PodcastCell.swift */,
-				FAE6F84C27590406007D63FD /* EpisodeCell.swift */,
 				FAE6F84D27590406007D63FD /* EpisodeCell.xib */,
+				FAE6F84C27590406007D63FD /* EpisodeCell.swift */,
 				FA043E91275A3B7700996792 /* PlayerDetailView.xib */,
 				FA043E93275A40EF00996792 /* PlayerDetailView.swift */,
 			);

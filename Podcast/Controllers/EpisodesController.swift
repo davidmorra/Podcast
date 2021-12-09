@@ -63,11 +63,6 @@ class EpisodesController: UITableViewController {
         activityIndicatorView.style = .large
         activityIndicatorView.color = .darkGray
         activityIndicatorView.startAnimating()
-        
-        let label = UILabel()
-        label.text = "Searching for episodes"
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
                 
         return activityIndicatorView
     }
@@ -91,15 +86,21 @@ class EpisodesController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
         
-        print("Playing episode:", episode.title)
+        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
+            .map({$0 as? UIWindowScene})
+            .compactMap({$0})
+            .first?.windows
+            .filter({$0.isKeyWindow}).first
+        let mainTabController = window?.rootViewController as? MainTabBarController
+        mainTabController?.maximazePlayerDelail(episode: episode)
         
-        let playerDetailView = PlayerDetailView.initFromNib()
         
-        playerDetailView.episode = episode
-        
-        playerDetailView.frame = self.view.frame
-        
-        let window = UIApplication.shared.keyWindow
-        window?.addSubview(playerDetailView)
+//
+//        let playerDetailView = PlayerDetailView.initFromNib()
+//        playerDetailView.episode = episode
+//        playerDetailView.frame = self.view.frame
+//
+//        let window = UIApplication.shared.keyWindow
+//        window?.addSubview(playerDetailView)
     }
 }

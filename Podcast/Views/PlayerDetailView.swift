@@ -72,6 +72,8 @@ class PlayerDetailView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        
         observerPlayerCurrentTime()
         
         let time = CMTimeMake(value: 1, timescale: 3)
@@ -83,9 +85,26 @@ class PlayerDetailView: UIView {
         
     }
     
+    @objc func handleTapMaximize() {
+        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
+            .map({$0 as? UIWindowScene})
+            .compactMap({$0})
+            .first?.windows
+            .filter({$0.isKeyWindow}).first
+        let mainTabController = window?.rootViewController as? MainTabBarController
+        mainTabController?.maximazePlayerDelail(episode: nil)
+    }
+    
     //MARK: - Actions
     @IBAction func handleDismiss(_ sender: Any) {
-        self.removeFromSuperview()
+//        self.removeFromSuperview()
+        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
+            .map({$0 as? UIWindowScene})
+            .compactMap({$0})
+            .first?.windows
+            .filter({$0.isKeyWindow}).first
+        let mainTabController = window?.rootViewController as? MainTabBarController
+        mainTabController?.minimizePlayerDetail()
         
     }
     
