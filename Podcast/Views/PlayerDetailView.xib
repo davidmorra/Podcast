@@ -15,6 +15,68 @@
             <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nx9-og-5cE">
+                    <rect key="frame" x="0.0" y="44" width="390" height="64"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C7t-Ch-REl">
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="0.66666666666666663"/>
+                            <color key="backgroundColor" systemColor="systemGray4Color"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="DM4-dr-7B3"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZZC-R1-Qfu">
+                            <rect key="frame" x="8" y="8" width="374" height="48"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="podc" translatesAutoresizingMaskIntoConstraints="NO" id="rOP-5e-Nw7">
+                                    <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="IAl-y0-Xcy"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4XE-eB-84g">
+                                    <rect key="frame" x="56" y="0.0" width="206" height="48"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVf-Sh-KGR">
+                                    <rect key="frame" x="270" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="4yF-jL-N25"/>
+                                    </constraints>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="pause.fill" catalog="system">
+                                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="28" scale="default"/>
+                                    </buttonConfiguration>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tk7-4b-VuB">
+                                    <rect key="frame" x="326" y="0.0" width="48" height="48"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="hUg-F0-AZf"/>
+                                    </constraints>
+                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="goforward.15" catalog="system">
+                                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="28" scale="default"/>
+                                    </buttonConfiguration>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="48b-Cu-PL1"/>
+                        <constraint firstItem="ZZC-R1-Qfu" firstAttribute="top" secondItem="nx9-og-5cE" secondAttribute="top" constant="8" id="6yj-f0-KaK"/>
+                        <constraint firstItem="C7t-Ch-REl" firstAttribute="top" secondItem="nx9-og-5cE" secondAttribute="top" id="NKl-4j-sWL"/>
+                        <constraint firstItem="C7t-Ch-REl" firstAttribute="leading" secondItem="nx9-og-5cE" secondAttribute="leading" id="OLN-Xw-5rh"/>
+                        <constraint firstAttribute="trailing" secondItem="C7t-Ch-REl" secondAttribute="trailing" id="cgF-b0-aF7"/>
+                        <constraint firstAttribute="bottom" secondItem="ZZC-R1-Qfu" secondAttribute="bottom" constant="8" id="mcz-OV-FeK"/>
+                        <constraint firstItem="ZZC-R1-Qfu" firstAttribute="leading" secondItem="nx9-og-5cE" secondAttribute="leading" constant="8" id="tPJ-vE-vGD"/>
+                        <constraint firstAttribute="trailing" secondItem="ZZC-R1-Qfu" secondAttribute="trailing" constant="8" id="tlt-b9-fRo"/>
+                    </constraints>
+                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9Dt-BF-dOh">
                     <rect key="frame" x="24" y="44" width="342" height="742"/>
                     <subviews>
@@ -151,10 +213,13 @@
             <viewLayoutGuide key="safeArea" id="0nc-Vx-xew"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="nx9-og-5cE" firstAttribute="top" secondItem="0nc-Vx-xew" secondAttribute="top" id="3kT-q4-j3E"/>
                 <constraint firstItem="9Dt-BF-dOh" firstAttribute="leading" secondItem="0nc-Vx-xew" secondAttribute="leading" constant="24" id="JJw-Ba-H8k"/>
+                <constraint firstItem="0nc-Vx-xew" firstAttribute="trailing" secondItem="nx9-og-5cE" secondAttribute="trailing" id="MfB-JD-vkv"/>
                 <constraint firstItem="0nc-Vx-xew" firstAttribute="trailing" secondItem="9Dt-BF-dOh" secondAttribute="trailing" constant="24" id="OLq-SV-ypm"/>
                 <constraint firstItem="0nc-Vx-xew" firstAttribute="bottom" secondItem="9Dt-BF-dOh" secondAttribute="bottom" constant="24" id="YEG-zE-DTc"/>
                 <constraint firstItem="9Dt-BF-dOh" firstAttribute="top" secondItem="0nc-Vx-xew" secondAttribute="top" id="YrN-Iy-sl8"/>
+                <constraint firstItem="nx9-og-5cE" firstAttribute="leading" secondItem="0nc-Vx-xew" secondAttribute="leading" id="ZZH-vy-7Px"/>
             </constraints>
             <connections>
                 <outlet property="authorLabel" destination="z2U-uf-7a0" id="ajk-p1-PAC"/>
@@ -165,6 +230,12 @@
                 <outlet property="episodeTitleLabel" destination="lGK-jJ-tmu" id="Ysc-7N-Frr"/>
                 <outlet property="goBackwardButton" destination="DS3-AD-lXv" id="zNF-NL-7bn"/>
                 <outlet property="goForwardButton" destination="QGu-qh-Zt3" id="4Zs-AW-LDS"/>
+                <outlet property="maximizedStackView" destination="9Dt-BF-dOh" id="Up5-vv-GMv"/>
+                <outlet property="miniEpisodeImageVIew" destination="rOP-5e-Nw7" id="uUU-gv-BFD"/>
+                <outlet property="miniFastForwardButton" destination="Tk7-4b-VuB" id="ba8-bN-MFc"/>
+                <outlet property="miniPlayPauseButton" destination="eVf-Sh-KGR" id="K1n-aO-Sfs"/>
+                <outlet property="miniPlayerView" destination="nx9-og-5cE" id="Obr-w6-Omu"/>
+                <outlet property="miniTitleLabel" destination="4XE-eB-84g" id="fm7-Cs-YHI"/>
                 <outlet property="playPause" destination="TkE-Bu-97S" id="Iz8-qc-LFs"/>
             </connections>
             <point key="canvasLocation" x="136" y="-37"/>
@@ -173,6 +244,7 @@
     <resources>
         <image name="gobackward.15" catalog="system" width="121" height="128"/>
         <image name="goforward.15" catalog="system" width="121" height="128"/>
+        <image name="pause.fill" catalog="system" width="116" height="128"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="podc" width="500" height="500"/>
         <image name="speaker.fill" catalog="system" width="128" height="128"/>
@@ -182,6 +254,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemIndigoColor">
             <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -86,11 +86,7 @@ class EpisodesController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
         
-        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
-            .map({$0 as? UIWindowScene})
-            .compactMap({$0})
-            .first?.windows
-            .filter({$0.isKeyWindow}).first
+        let window = UIApplication.keyWindow
         let mainTabController = window?.rootViewController as? MainTabBarController
         mainTabController?.maximazePlayerDelail(episode: episode)
         

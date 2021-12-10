@@ -12,6 +12,8 @@ class PlayerDetailView: UIView {
     
     var episode: Episode! {
         didSet {
+            miniTitleLabel.text = episode.title
+            
             episodeTitleLabel.text = episode.title
             authorLabel.text = episode.author
             
@@ -19,16 +21,15 @@ class PlayerDetailView: UIView {
             
             guard let url = URL(string: episode.imageUrl ?? "" ) else { return }
             episodeImageView.sd_setImage(with: url)
+            miniEpisodeImageVIew.sd_setImage(with: url)
         }
     }
     
     fileprivate func playEpisode() {
-//        print("play url:", episode.streamUrl)
 
         guard let url = URL(string: episode.streamUrl) else { return }
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
-//        player.play()
     }
     
     let player: AVPlayer = {
@@ -69,10 +70,14 @@ class PlayerDetailView: UIView {
         
     }
     
+    var panGesture: UIPanGestureRecognizer!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        addGestureRecognizer(panGesture)
         
         observerPlayerCurrentTime()
         
@@ -85,27 +90,57 @@ class PlayerDetailView: UIView {
         
     }
     
+    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            let translation = gesture.translation(in: self.superview)
+            self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            
+            self.miniPlayerView.alpha = 1 + translation.y / 200
+            self.maximizedStackView.alpha = -translation.y / 200
+                        
+        } else if gesture.state == .ended {
+            
+            handlePanEnded(gesture: gesture)
+        }
+
+    }
+    
+    func handlePanEnded(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.superview)
+        let velocity = gesture.velocity(in: self.superview)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut) {
+            self.transform = .identity
+            
+            if translation.y < -200 || velocity.y < -500 {
+                let window = UIApplication.keyWindow
+                let mainTabController = window?.rootViewController as? MainTabBarController
+                mainTabController?.maximazePlayerDelail(episode: nil)
+                
+                gesture.isEnabled = false
+            } else {
+                self.miniPlayerView.alpha = 1
+                self.maximizedStackView.alpha = 0
+            }
+        }
+    }
+    
     @objc func handleTapMaximize() {
-        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
-            .map({$0 as? UIWindowScene})
-            .compactMap({$0})
-            .first?.windows
-            .filter({$0.isKeyWindow}).first
+        let window = UIApplication.keyWindow
         let mainTabController = window?.rootViewController as? MainTabBarController
         mainTabController?.maximazePlayerDelail(episode: nil)
+        
+        panGesture.isEnabled = false
     }
     
     //MARK: - Actions
     @IBAction func handleDismiss(_ sender: Any) {
 //        self.removeFromSuperview()
-        let window = UIApplication.shared.connectedScenes        .filter({$0.activationState == .foregroundActive})
-            .map({$0 as? UIWindowScene})
-            .compactMap({$0})
-            .first?.windows
-            .filter({$0.isKeyWindow}).first
+        let window = UIApplication.keyWindow
         let mainTabController = window?.rootViewController as? MainTabBarController
         mainTabController?.minimizePlayerDetail()
         
+        panGesture.isEnabled = true
     }
     
     fileprivate let shrunkenTransform = CGAffineTransform(scaleX: 0.7, y: 0.7)
@@ -181,6 +216,32 @@ class PlayerDetailView: UIView {
     
     @IBOutlet weak var currentTimeSlider: UISlider!
     
+    @IBOutlet weak var maximizedStackView: UIStackView!
+
+    //MARK: - Mini Player Outlets
+    @IBOutlet weak var miniPlayerView: UIView! {
+        didSet {
+            miniPlayerView.layer.shadowRadius = 2
+        }
+    }
+    
+    @IBOutlet weak var miniEpisodeImageVIew: UIImageView!
+    
+    @IBOutlet weak var miniTitleLabel: UILabel!
+    
+    @IBOutlet weak var miniPlayPauseButton: UIButton!  {
+        didSet {
+            miniPlayPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var miniFastForwardButton: UIButton!  {
+        didSet {
+            miniFastForwardButton.addTarget(self, action: #selector(handleFastForward), for: .touchUpInside)
+        }
+    }
+    
+    
     
     //MARK: - Buttons
     @IBOutlet weak var playPause: UIButton! {
@@ -193,11 +254,14 @@ class PlayerDetailView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPause.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            miniPlayPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+
             enlargeEpisodeImageView()
             
         } else {
             player.pause()
             playPause.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            miniPlayPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
             shrinkEpisodeImageView()
             
         }
